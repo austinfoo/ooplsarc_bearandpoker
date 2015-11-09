@@ -14,7 +14,7 @@
 // bearandpoker_eval
 // ------------
 
-std::string bearandpoker_eval (std::vector<uint64_t>&  bids);
+std::string bearandpoker_eval (const std::vector<uint32_t>&  bids);
 
 // -------------
 // bearandpoker_print
@@ -57,24 +57,30 @@ void bearandpoker_solve (std::istream& r, std::ostream& w);
 // bearandpoker_eval
 // ------------
 
-std::string bearandpoker_eval (std::vector<uint64_t>& bids)
+std::string bearandpoker_eval (const std::vector<uint32_t>& bids)
 {
+  uint32_t common = 0;
+
   for (int i = 0; i < bids.size(); ++i)
   {
+    uint32_t bid = bids[i];
+
     // Divide the bid down by 2 or 3 until we can't divide it anymore
     bool finished = false;
     while (!finished) {
-      if ((bids[i] % 2) == 0) {
-	bids[i] = bids[i] / 2;
-      } else if ((bids[i] % 3) == 0) {
-	bids[i] = bids[i] / 3;
+      if ((bid % 2) == 0) {
+	bid = bid / 2;
+      } else if ((bid % 3) == 0) {
+	bid = bid / 3;
       } else {
 	finished = true;
       }
     }
 
     // If all the bids are not the same then we fail
-    if (bids[i] != bids[0]) {
+    if (i == 0) {
+      common = bid;
+    } else if (bid != common) {
       return "No";
     }
   }
@@ -108,13 +114,13 @@ void bearandpoker_solve (std::istream& r, std::ostream& w)
   }
 
   // Get the initial bids
-  std::vector<uint64_t> bids;
+  std::vector<uint32_t> bids (num_bears);
   if (std::getline(r, s)) {
     std::istringstream sin(s);
     for (int i = 0; i < num_bears; ++i) {
       int bid = 0;
       sin >> bid;
-      bids.emplace_back(bid);
+      bids[i] = bid;
     }
   }
 

@@ -14,7 +14,7 @@
 // bearandpoker_eval
 // ------------
 
-std::string bearandpoker_eval (std::vector<uint64_t>&  bids);
+std::string bearandpoker_eval (const std::vector<uint32_t>&  bids);
 
 // -------------
 // bearandpoker_print
